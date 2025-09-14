@@ -54,7 +54,7 @@ class _MainPageState extends State<MainPage> {
             );
           },
         ),
-        body: Consumer<NoteProvider>(
+        body: Consumer<NotesProvider>(
           builder: (context, noteProvider, child) {
             final List<Note> notes = noteProvider.notes;
             return notes.isEmpty

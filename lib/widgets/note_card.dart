@@ -1,10 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
+import 'package:note_app/change_notifiers/new_note_controllers.dart';
+import 'package:provider/provider.dart';
 
 import '../core/constants.dart';
+import '../core/utils.dart';
 import '../models/note.dart';
 import '../pages/new_or_edit_page.dart';
+import 'note_tag.dart';
 
 class NoteCard extends StatelessWidget {
   const NoteCard({required this.note, required this.isInGrid, super.key});
@@ -19,7 +24,11 @@ class NoteCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => NewOrEditPage(isNewNote: false),
+            builder:
+                (context) => ChangeNotifierProvider(
+                  create: (_) => NewNoteController()..note = note,
+                  child: NewOrEditPage(isNewNote: false),
+                ),
           ),
         );
       },
@@ -36,53 +45,47 @@ class NoteCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Tiêu đề',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-                color: gray900,
+            if (note.title != null) ...[
+              Text(
+                note.title!,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  color: gray900,
+                ),
               ),
-            ),
-            SizedBox(height: 4),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: List.generate(
-                  3,
-                  (index) => Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      color: gray100,
-                    ),
-                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 2),
-                    margin: EdgeInsets.only(right: 4),
-                    child: Text(
-                      'First',
-                      style: TextStyle(fontSize: 12, color: gray700),
-                    ),
+              SizedBox(height: 4),
+            ],
+            if (note.tags != null) ...[
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: List.generate(
+                    note.tags!.length,
+                    (index) => NoteTag(label: note.tags![index]),
                   ),
                 ),
               ),
-            ),
+            ],
             SizedBox(height: 4),
-            if (isInGrid)
-              Expanded(
-                child: Text(
-                  'Nội dung',
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(color: gray700),
-                ),
-              )
-            else
-              Text('Nội dung', style: TextStyle(color: gray700)),
+            if (note.content != null)
+              isInGrid
+                  ? Expanded(
+                    child: Text(
+                      note.content!,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(color: gray700),
+                    ),
+                  )
+                  : Text(note.content!, style: TextStyle(color: gray700)),
+            if (isInGrid) Spacer(),
             Row(
               children: [
                 Text(
-                  '10/07/2025',
+                  toShortDate(note.dateModified),
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
