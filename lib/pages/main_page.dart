@@ -4,6 +4,7 @@ import 'package:note_app/change_notifiers/new_note_controllers.dart';
 import 'package:note_app/change_notifiers/notes_provider.dart';
 import 'package:note_app/core/constants.dart';
 import 'package:note_app/pages/new_or_edit_page.dart';
+import 'package:note_app/widgets/view_option.dart';
 import 'package:provider/provider.dart';
 
 import '../models/note.dart';
@@ -64,102 +65,10 @@ class _MainPageState extends State<MainPage> {
                   child: Column(
                     children: [
                       SearchField(),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Row(
-                          children: [
-                            NoteIconButton(
-                              icon:
-                                  isDescending
-                                      ? FontAwesomeIcons.arrowDown
-                                      : FontAwesomeIcons.arrowUp,
-                              onPressed: () {
-                                setState(() {
-                                  isDescending = !isDescending;
-                                });
-                              },
-                            ),
-
-                            SizedBox(width: 16),
-                            DropdownButton<String>(
-                              value: dropdownValue,
-                              icon: Padding(
-                                padding: const EdgeInsets.only(left: 8.0),
-                                child: FaIcon(
-                                  FontAwesomeIcons.arrowDownWideShort,
-                                  size: 18,
-                                  color: gray700,
-                                ),
-                              ),
-                              underline: SizedBox.shrink(),
-                              borderRadius: BorderRadius.circular(16),
-                              isDense: true,
-                              items:
-                                  dropdownOptions
-                                      .map(
-                                        (e) => DropdownMenuItem<String>(
-                                          value: e,
-                                          child: Row(
-                                            children: [
-                                              Text(e),
-                                              if (e == dropdownValue) ...[
-                                                SizedBox(width: 8),
-                                                Icon(Icons.check),
-                                              ],
-                                            ],
-                                          ),
-                                        ),
-                                      )
-                                      .toList(),
-                              selectedItemBuilder:
-                                  (context) =>
-                                      dropdownOptions
-                                          .map((e) => Text(e))
-                                          .toList(),
-                              onChanged: (newValue) {
-                                setState(() {
-                                  dropdownValue = newValue!;
-                                });
-                              },
-                            ),
-                            const Spacer(),
-                            NoteIconButton(
-                              icon:
-                                  isGrid
-                                      ? FontAwesomeIcons.tableCellsLarge
-                                      : FontAwesomeIcons.bars,
-                              onPressed: () {
-                                setState(() {
-                                  isGrid = !isGrid;
-                                });
-                              },
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  isGrid = !isGrid;
-                                });
-                              },
-                              icon: FaIcon(
-                                isGrid
-                                    ? FontAwesomeIcons.tableCellsLarge
-                                    : FontAwesomeIcons.bars,
-                              ),
-                              padding: EdgeInsets.zero,
-                              visualDensity: VisualDensity.compact,
-                              constraints: BoxConstraints(),
-                              style: IconButton.styleFrom(
-                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              ),
-                              iconSize: 18,
-                              color: gray700,
-                            ),
-                          ],
-                        ),
-                      ),
+                     const ViewOptions(),
                       Expanded(
                         child:
-                            isGrid
+                            noteProvider.isGrid
                                 ? NotesGrid(notes: notes)
                                 : NotesList(notes: notes),
                       ),
