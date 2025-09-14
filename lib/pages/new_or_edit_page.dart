@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:note_app/change_notifiers/new_note_controllers.dart';
+import 'package:note_app/core/dialogs.dart';
 import 'package:note_app/widgets/note_icon_button_outlined.dart';
 import 'package:note_app/widgets/note_metadata.dart';
 import 'package:provider/provider.dart';
@@ -88,10 +89,7 @@ class _NewOrEditPageState extends State<NewOrEditPage> {
             Navigator.pop(context);
             return;
           }
-          final bool? shouldSave = await showDialog<bool?>(
-            context: context,
-            builder: (_) => DialogCard(child: ConfirmationDialog()),
-          );
+          final bool? shouldSave = await showConfirmationDialog(context: context);
           if (shouldSave == null) return;
 
           if (!context.mounted) return;
