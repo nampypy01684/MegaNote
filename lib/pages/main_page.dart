@@ -3,7 +3,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:note_app/change_notifiers/new_note_controllers.dart';
 import 'package:note_app/change_notifiers/notes_provider.dart';
 import 'package:note_app/core/constants.dart';
+import 'package:note_app/core/dialogs.dart';
 import 'package:note_app/pages/new_or_edit_page.dart';
+import 'package:note_app/services/auth_service.dart';
 import 'package:note_app/widgets/view_option.dart';
 import 'package:provider/provider.dart';
 
@@ -39,7 +41,16 @@ class _MainPageState extends State<MainPage> {
           actions: [
             NoteIconButtonOutlined(
               icon: FontAwesomeIcons.rightFromBracket,
-              onPressed: () {},
+              onPressed: () async {
+                final bool shouldLogout =
+                    await showConfirmationDialog(
+                      context: context,
+                      title: 'Bạn có chắc muốn đăng xuất khỏi ứng dụng?',
+                    ) ??
+                    false;
+                if (shouldLogout)
+                AuthService.logout();
+              },
             ),
           ],
         ),
@@ -48,9 +59,11 @@ class _MainPageState extends State<MainPage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ChangeNotifierProvider(
-                    create: (context) => NewNoteController(),
-                    child: NewOrEditPage(isNewNote: true)),
+                builder:
+                    (context) => ChangeNotifierProvider(
+                      create: (context) => NewNoteController(),
+                      child: NewOrEditPage(isNewNote: true),
+                    ),
               ),
             );
           },
@@ -58,20 +71,30 @@ class _MainPageState extends State<MainPage> {
         body: Consumer<NotesProvider>(
           builder: (context, noteProvider, child) {
             final List<Note> notes = noteProvider.notes;
-            return notes.isEmpty
+            return notes.isEmpty && noteProvider.searchTerm.isEmpty
                 ? NoNotes()
                 : Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     children: [
                       SearchField(),
-                     const ViewOptions(),
-                      Expanded(
-                        child:
-                            noteProvider.isGrid
-                                ? NotesGrid(notes: notes)
-                                : NotesList(notes: notes),
-                      ),
+                      if (notes.isNotEmpty) ...[
+                        const ViewOptions(),
+                        Expanded(
+                          child:
+                              noteProvider.isGrid
+                                  ? NotesGrid(notes: notes)
+                                  : NotesList(notes: notes),
+                        ),
+                      ] else
+                        Expanded(
+                          child: Center(
+                            child: Text(
+                              'Không tìm thấy ghi chú',
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
                     ],
                   ),
                 );
@@ -81,5 +104,3 @@ class _MainPageState extends State<MainPage> {
     );
   }
 }
-
-

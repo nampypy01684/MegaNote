@@ -5,13 +5,15 @@ import '../core/constants.dart';
 class NoteButton extends StatelessWidget {
   const NoteButton({
     super.key,
-    required this.label,
+    required this.child,
     this.onPressed,
+    this.isOutlined = false,
   });
 
 
-  final String label;
+  final Widget child;
   final VoidCallback? onPressed;
+  final bool isOutlined;
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +23,8 @@ class NoteButton extends StatelessWidget {
         // Sửa: Di chuyển style vào đây
         backgroundColor: primary,
         foregroundColor: white,
+        disabledBackgroundColor: gray300,
+        disabledForegroundColor: black,
         // Sửa từ foregroundBuilder
         side: BorderSide(color: black),
         shape: RoundedRectangleBorder(
@@ -29,7 +33,7 @@ class NoteButton extends StatelessWidget {
         elevation: 0,
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       ),
-      child: Text(label), // Sửa: Text không có style ButtonStyle
+      child: child,
     );
   }
 }

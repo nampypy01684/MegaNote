@@ -1,12 +1,26 @@
 import 'package:flutter/cupertino.dart';
+import 'package:note_app/core/extensions.dart';
 
 import '../enums/order_option.dart';
 import '../models/note.dart';
 
+
+
 class NotesProvider extends ChangeNotifier {
   final List<Note> _notes = [];
 
-  List<Note> get notes => [..._notes]..sort(_compare);
+  List<Note> get notes =>
+      [..._searchTerm.isEmpty ? _notes : _notes.where(_test)]..sort(_compare);
+
+  bool _test(Note note) {
+    final term = _searchTerm.toLowerCase().trim();
+    final title = note.title?.toLowerCase() ?? '';
+    final content = note.content?.toLowerCase() ?? '';
+    final tags = note.tags.map((e) => e.toLowerCase()).toList() ?? [];
+    return title.contains(term) ||
+        content.contains(term) ||
+        tags.deepContains(term);
+  }
 
   int _compare(Note note1, note2) {
     return _orderBy == OrderOption.dateModified
@@ -62,4 +76,13 @@ class NotesProvider extends ChangeNotifier {
   }
 
   bool get isGrid => _isGrid;
+
+  String _searchTerm = '';
+
+  set searchTerm(String value) {
+    _searchTerm = value;
+    notifyListeners();
+  }
+
+  String get searchTerm => _searchTerm;
 }

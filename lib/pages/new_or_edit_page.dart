@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import '../core/constants.dart';
 import '../widgets/confirmation_dialog.dart';
 import '../widgets/dialog_card.dart';
+import '../widgets/note_back_button.dart';
 import '../widgets/note_toolbar.dart';
 
 class NewOrEditPage extends StatefulWidget {
@@ -89,7 +90,10 @@ class _NewOrEditPageState extends State<NewOrEditPage> {
             Navigator.pop(context);
             return;
           }
-          final bool? shouldSave = await showConfirmationDialog(context: context);
+          final bool? shouldSave = await showConfirmationDialog(
+            context: context,
+            title: 'Bạn có muốn lưu ghi chú này không?',
+          );
           if (shouldSave == null) return;
 
           if (!context.mounted) return;
@@ -101,14 +105,7 @@ class _NewOrEditPageState extends State<NewOrEditPage> {
         child: Scaffold(
           resizeToAvoidBottomInset: true,
           appBar: AppBar(
-            leading: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: NoteIconButtonOutlined(
-                key: UniqueKey(),
-                icon: FontAwesomeIcons.chevronLeft,
-                onPressed: () => Navigator.maybePop(context),
-              ),
-            ),
+            leading: NoteBackButton(),
             title: Text(
               widget.isNewNote ? 'Ghi chú mới' : 'Sửa ghi chú',
               style: TextStyle(fontSize: 24),
@@ -187,7 +184,7 @@ class _NewOrEditPageState extends State<NewOrEditPage> {
                                   },
                                 ),
                           ),
-                         NoteMetadata(note: newNoteController.note,),
+                          NoteMetadata(note: newNoteController.note),
                           const Divider(
                             thickness: 1,
                             color: Colors.grey,
@@ -224,3 +221,5 @@ class _NewOrEditPageState extends State<NewOrEditPage> {
     );
   }
 }
+
+

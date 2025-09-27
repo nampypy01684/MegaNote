@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "528417292636",
+    "project_id": "note-4649a",
+    "storage_bucket": "note-4649a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:528417292636:android:0341e8f92ef3e9b2f68199",
+        "android_client_info": {
+          "package_name": "com.project.namvox.note_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "528417292636-am1pocb3tjas8iqs2md25cli91ofeu93.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.project.namvox.note_app",
+            "certificate_hash": "4c1fc40121b20557c191ade796e9979112fa421e"
+          }
+        },
+        {
+          "client_id": "528417292636-rhfvfl1pbifil268v8q4i15nlntppddi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAokRRATnlPSoCFQHaOAxm1bNM8I3gvw5o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "528417292636-rhfvfl1pbifil268v8q4i15nlntppddi.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "528417292636-9c8hg7notpms069j1rf003iiu4tgvto3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.project.namvox.noteApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

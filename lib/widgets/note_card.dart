@@ -99,11 +99,17 @@ class NoteCard extends StatelessWidget {
                   onTap: () async {
                     final shouldDelete = await showConfirmationDialog(
                       context: context,
+                      title: "Chắc chắn muốn lưu ghi ghi chú này?",
                     ) ?? false;
+                    // final bool? shouldSave = await showConfirmationDialog(
+                    //   context: context,
+                    //   title: "Bạn có muốn lưu thay đổi?",
+                    // );
                     if (shouldDelete && context.mounted) {
                       context.read<NotesProvider>().deleteNote(note);
                     }
                   },
+
                   child: FaIcon(
                     FontAwesomeIcons.trash,
                     color: gray500,

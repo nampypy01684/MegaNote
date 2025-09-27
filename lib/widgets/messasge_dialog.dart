@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
-import 'dialog_card.dart';
+import 'package:note_app/widgets/dialog_card.dart';
 
 import 'note_button.dart';
 
-class ConfirmationDialog extends StatelessWidget {
-  const ConfirmationDialog({
+class MessasgeDialog extends StatelessWidget {
+  const MessasgeDialog({
     super.key,
-    required this.title,
+    required this.message,
   });
-  final String title;
+  final String message;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class ConfirmationDialog extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Bạn có muốn lưu ghi chú này không?',
+            message,
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
@@ -30,13 +30,8 @@ class ConfirmationDialog extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               NoteButton(
-                child: Text('No'),
-                onPressed: () => Navigator.pop(context, false),
-              ),
-              SizedBox(width: 8),
-              NoteButton(
-                child: Text('Yes'),
-                onPressed: () => Navigator.pop(context, true),
+                child: Text('OK'),
+                onPressed: () => Navigator.pop(context),
               ),
             ],
           ),
