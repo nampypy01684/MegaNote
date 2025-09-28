@@ -99,7 +99,7 @@ class NoteCard extends StatelessWidget {
                   onTap: () async {
                     final shouldDelete = await showConfirmationDialog(
                       context: context,
-                      title: "Chắc chắn muốn lưu ghi ghi chú này?",
+                      title: "Chắc chắn muốn xóa ghi ghi chú này?",
                     ) ?? false;
                     // final bool? shouldSave = await showConfirmationDialog(
                     //   context: context,
